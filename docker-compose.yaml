@@ -1,0 +1,62 @@
+version: "3.0"
+
+services:
+
+    nimbus:
+      image: statusim/nimbus-eth2:${NIMBUS_TAG}
+      container_name: nimbus
+      user: "${HOST_UID}:${HOST_GID}"
+      restart: always
+      stop_grace_period: 3m
+      ports:
+        - ${CONSENSUS_P2P_PORT}:${CONSENSUS_P2P_PORT}/tcp
+        - ${CONSENSUS_P2P_PORT}:${CONSENSUS_P2P_PORT}/udp
+        # Exposing the REST port isn't necessary for the execution client (it shares network anyways) but can be nice for debugging.
+        - 127.0.0.1:5052:5052/tcp
+      volumes:
+        - ${CONSENSUS_DATA}:/home/user/nimbus-eth2/build/data
+        - ./jwtsecret.txt:/jwtsecret:ro
+        - ./scripts:/home/user/nimbus-eth2/scripts:ro
+        - ./validator_keys:/home/user/nimbus-eth2/validator_keys:ro
+      environment:
+        - KEYSTORE_PASSWD
+      entrypoint:
+        - "/bin/sh"
+        - "/home/user/nimbus-eth2/scripts/start-nimbus.sh"
+      command: >-
+        --enr-auto-update=true
+        --network=${CONSENSUS_NETWORK}
+        --web3-url=http://nethermind:8545
+        --data-dir=/home/user/nimbus-eth2/build/data
+        --jwt-secret=/jwtsecret
+        --tcp-port=${CONSENSUS_P2P_PORT}
+        --udp-port=${CONSENSUS_P2P_PORT}
+        --non-interactive
+        --status-bar=false
+        --graffiti=""
+        --suggested-fee-recipient=${DEFAULT_FEE_RECIPIENT}
+
+    nethermind:
+        image: nethermind/nethermind:${NETHERMIND_TAG}
+        container_name: nethermind
+        environment:
+          - NETHERMIND_CONFIG=${EXECUTION_NETWORK}
+          - NETHERMIND_INITCONFIG_WEBSOCKETSENABLED=false
+          - NETHERMIND_JSONRPCCONFIG_ENABLED=true
+          - NETHERMIND_JSONRPCCONFIG_ENABLEDMODULES=[Eth,Net]
+          - NETHERMIND_JSONRPCCONFIG_HOST=0.0.0.0
+          - NETHERMIND_JSONRPCCONFIG_JWTSECRETFILE=/jwtsecret
+          - NETHERMIND_PRUNINGCONFIG_MODE=Full
+          - NETHERMIND_NETWORKCONFIG_DISCOVERYPORT=${EXECUTION_P2P_PORT}
+          - NETHERMIND_NETWORKCONFIG_P2PPORT=${EXECUTION_P2P_PORT}
+        restart: always
+        stop_grace_period: 3m
+        volumes:
+          - ${EXECUTION_DATA}:/nethermind/data
+          - ./jwtsecret.txt:/jwtsecret:ro
+        ports:
+          # Exposing the RPC port isn't necessary for the consensus client (it shares network anyways) but can be nice for debugging.
+          - "127.0.0.1:8545:8545/tcp"
+          - "0.0.0.0:${EXECUTION_P2P_PORT}:${EXECUTION_P2P_PORT}/tcp"
+          - "0.0.0.0:${EXECUTION_P2P_PORT}:${EXECUTION_P2P_PORT}/udp"
+        command: --datadir /nethermind/data
