@@ -11,11 +11,12 @@ services:
       ports:
         - ${CONSENSUS_P2P_PORT}:${CONSENSUS_P2P_PORT}/tcp
         - ${CONSENSUS_P2P_PORT}:${CONSENSUS_P2P_PORT}/udp
-        # Exposing the REST port isn't necessary for the execution client (it shares network anyways) but can be nice for debugging.
+        # Expose keymanager API to the host machine.
         - 127.0.0.1:5052:5052/tcp
       volumes:
         - ${CONSENSUS_DATA}:/home/user/nimbus-eth2/build/data
         - ./jwtsecret.txt:/jwtsecret:ro
+        - ./keymanagersecret.txt:/keymanagersecret:ro
         - ./scripts:/home/user/nimbus-eth2/scripts:ro
         - ./validator_keys:/home/user/nimbus-eth2/validator_keys:ro
       environment:
@@ -24,6 +25,9 @@ services:
         - "/bin/sh"
         - "/home/user/nimbus-eth2/scripts/start-nimbus.sh"
       command: >-
+        --keymanager
+        --keymanager-address=0.0.0.0
+        --keymanager-token-file=/keymanagersecret
         --enr-auto-update=true
         --network=${CONSENSUS_NETWORK}
         --web3-url=http://nethermind:8545

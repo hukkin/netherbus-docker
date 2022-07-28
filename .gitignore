@@ -2,5 +2,6 @@ data/
 validator_keys/
 .env
 jwtsecret.txt
+keymanagersecret.txt
 docker-compose.override.yaml
 docker-compose.override.yml
