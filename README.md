@@ -16,8 +16,12 @@
 
 ## (Optional) Sync from a trusted node
 
+Run the following commands in shell to fetch the current state of the consensus layer chain.
+If your Beacon API provider is not rate limiting you (free plans of third-party API providers typically rate limit),
+you should omit the `--backfill=false` flag to also obtain full block history.
+
 ```console
-# Set a working Beacon API URL here. Doesn't need to be provided by Infura
+# Set a working Beacon API URL here. Does not need to be provided by Infura
 beacon_api_url=https://272GSCR2NRpg5n55qsSc4y5sMD8:4c9e4d691e34ge523456bb29f3e0332f@eth2-beacon-mainnet.infura.io
 
 mkdir nimbus-snapshot
