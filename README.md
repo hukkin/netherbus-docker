@@ -2,7 +2,9 @@
 
 ## Usage
 
-1. `cp default.env .env`
+1. ```sh
+   cp default.env .env
+   ```
 1. Edit `.env`
 1. Create JWT secret and save it in `jwtsecret.txt`. E.g. run
    ```sh
