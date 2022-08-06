@@ -39,6 +39,8 @@ services:
         --status-bar=false
         --graffiti=""
         --suggested-fee-recipient=${DEFAULT_FEE_RECIPIENT}
+        --payload-builder
+        --payload-builder-url=http://mevboost:18550
 
     nethermind:
         image: nethermind/nethermind:${NETHERMIND_TAG}
@@ -64,3 +66,13 @@ services:
           - "0.0.0.0:${EXECUTION_P2P_PORT}:${EXECUTION_P2P_PORT}/tcp"
           - "0.0.0.0:${EXECUTION_P2P_PORT}:${EXECUTION_P2P_PORT}/udp"
         command: --datadir /nethermind/data
+
+    mevboost:
+        image: flashbots/mev-boost:${MEVBOOST_TAG}
+        container_name: mevboost
+        restart: always
+        command: >-
+          -addr 0.0.0.0:18550
+          -${NETWORK}
+          -relay-check
+          -relays ${MEVBOOST_RELAYS}
