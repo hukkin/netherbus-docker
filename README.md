@@ -6,6 +6,10 @@
    cp default.env .env
    ```
 1. Edit `.env`
+1. Create data directories either manually see [here](https://nimbus.guide/data-dir.html#permissions) or by running
+   ```sh
+   sudo ./create-data-directories.sh $(whoami)
+   ```
 1. Create JWT secret and save it in `jwtsecret.txt`. E.g. run
    ```sh
    openssl rand -hex 32 | tr -d "\n" > "jwtsecret.txt"
