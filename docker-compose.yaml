@@ -29,6 +29,7 @@ services:
         --keymanager-address=0.0.0.0
         --keymanager-token-file=/keymanagersecret
         --enr-auto-update=true
+        --subscribe-all-subnets=true
         --network=${CONSENSUS_NETWORK}
         --web3-url=http://nethermind:8545
         --data-dir=/home/user/nimbus-eth2/build/data
