@@ -31,7 +31,7 @@ services:
         --enr-auto-update=true
         --subscribe-all-subnets=true
         --network=${CONSENSUS_NETWORK}
-        --web3-url=http://nethermind:8545
+        --web3-url=http://nethermind:8551
         --data-dir=/home/user/nimbus-eth2/build/data
         --jwt-secret=/jwtsecret
         --tcp-port=${CONSENSUS_P2P_PORT}
@@ -51,6 +51,7 @@ services:
           - NETHERMIND_JSONRPCCONFIG_ENABLEDMODULES=[Eth,Net]
           - NETHERMIND_JSONRPCCONFIG_HOST=0.0.0.0
           - NETHERMIND_JSONRPCCONFIG_JWTSECRETFILE=/jwtsecret
+          - NETHERMIND_JSONRPCCONFIG_ADDITIONALRPCURLS=http://0.0.0.0:8551|http|net;eth;engine
           - NETHERMIND_PRUNINGCONFIG_MODE=Full
           - NETHERMIND_PRUNINGCONFIG_FULLPRUNINGMAXDEGREEOFPARALLELISM=1
           - NETHERMIND_PRUNINGCONFIG_FULLPRUNINGTRIGGER=VolumeFreeSpace
@@ -63,8 +64,6 @@ services:
           - ${EXECUTION_DATA}:/nethermind/data
           - ./jwtsecret.txt:/jwtsecret:ro
         ports:
-          # Exposing the RPC port isn't necessary for the consensus client (it shares network anyways) but can be nice for debugging.
-          - "127.0.0.1:8545:8545/tcp"
           - "0.0.0.0:${EXECUTION_P2P_PORT}:${EXECUTION_P2P_PORT}/tcp"
           - "0.0.0.0:${EXECUTION_P2P_PORT}:${EXECUTION_P2P_PORT}/udp"
         command: --datadir /nethermind/data
