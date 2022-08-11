@@ -30,7 +30,7 @@ services:
         --keymanager-token-file=/keymanagersecret
         --enr-auto-update=true
         --subscribe-all-subnets=true
-        --network=${CONSENSUS_NETWORK}
+        --network=${NETWORK}
         --web3-url=http://nethermind:8551
         --data-dir=/home/user/nimbus-eth2/build/data
         --jwt-secret=/jwtsecret
@@ -45,7 +45,7 @@ services:
         image: nethermind/nethermind:${NETHERMIND_TAG}
         container_name: nethermind
         environment:
-          - NETHERMIND_CONFIG=${EXECUTION_NETWORK}
+          - NETHERMIND_CONFIG=${NETWORK}
           - NETHERMIND_INITCONFIG_WEBSOCKETSENABLED=false
           - NETHERMIND_JSONRPCCONFIG_ENABLED=true
           - NETHERMIND_JSONRPCCONFIG_ENABLEDMODULES=[Eth,Net]
