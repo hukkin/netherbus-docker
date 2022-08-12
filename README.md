@@ -26,11 +26,13 @@ you should omit the `--backfill=false` flag to also obtain full block history.
 ```sh
 # Set a working Beacon API URL here. Does not need to be provided by Infura
 beacon_api_url=https://272GSCR2NRpg5n55qsSc4y5sMD8:4c9e4d691e34ge523456bb29f3e0332f@eth2-beacon-mainnet.infura.io
+# Use e.g. "mainnet" or "goerli" here
+eth_network=mainnet
 
 mkdir nimbus-snapshot
 docker run -i --rm \
     -v ${PWD}/nimbus-snapshot:/home/user/nimbus-eth2/build/data -u $(id -u):$(id -g) \
-    statusim/nimbus-eth2:amd64-latest trustedNodeSync --network=mainnet --data-dir=/home/user/nimbus-eth2/build/data --trusted-node-url=${beacon_api_url} --backfill=false
+    statusim/nimbus-eth2:amd64-latest trustedNodeSync --network=${eth_network} --data-dir=/home/user/nimbus-eth2/build/data --trusted-node-url=${beacon_api_url} --backfill=false
 ```
 
 Now check that the checkpoint block root hash (printed in the last log message) is that of the canonical chain (compare to block explorers, friends etc.).
