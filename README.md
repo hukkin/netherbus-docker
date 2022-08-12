@@ -4,8 +4,9 @@
 
 1. ```sh
    cp default.env .env
+   cp default.nethermind.env nethermind.env
    ```
-1. Edit `.env`
+1. Edit `.env` and `nethermind.env`
 1. Create JWT secret and save it in `jwtsecret.txt`. E.g. run
    ```sh
    openssl rand -hex 32 | tr -d "\n" > "jwtsecret.txt"

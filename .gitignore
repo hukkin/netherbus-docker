@@ -1,6 +1,7 @@
 data/
 validator_keys/
 .env
+nethermind.env
 jwtsecret.txt
 keymanagersecret.txt
 docker-compose.override.yaml
