@@ -34,6 +34,7 @@ services:
         --jwt-secret=/jwtsecret
         --tcp-port=${CONSENSUS_P2P_PORT}
         --udp-port=${CONSENSUS_P2P_PORT}
+        --max-peers=${NIMBUS_PEERS}
         --non-interactive
         --status-bar=false
         --graffiti=""
