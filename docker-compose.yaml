@@ -19,6 +19,7 @@ services:
         - ./validator_keys:/home/user/nimbus-eth2/validator_keys:ro
       environment:
         - KEYSTORE_PASSWD
+        - ENABLE_MEVBOOST
       entrypoint:
         - "/bin/sh"
         - "/home/user/nimbus-eth2/scripts/start-nimbus.sh"
@@ -39,8 +40,6 @@ services:
         --status-bar=false
         --graffiti=""
         --suggested-fee-recipient=${DEFAULT_FEE_RECIPIENT}
-        --payload-builder
-        --payload-builder-url=http://mevboost:18550
 
     nethermind:
         image: nethermind/nethermind:${NETHERMIND_TAG}

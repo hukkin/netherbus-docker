@@ -8,4 +8,9 @@ else
     echo "keystore password not set. skipping validator keystore import"
 fi
 
-exec ./build/nimbus_beacon_node "$@"
+if [ "$ENABLE_MEVBOOST" != "" ]; then
+	mevboost_flags="--payload-builder --payload-builder-url=http://mevboost:18550"
+fi
+
+exec ./build/nimbus_beacon_node "$@" \
+    $mevboost_flags
