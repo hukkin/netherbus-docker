@@ -19,6 +19,7 @@ services:
         - ./validator_keys:/home/user/nimbus-eth2/validator_keys:ro
       environment:
         - KEYSTORE_PASSWD
+        - ENABLE_MEVBOOST
       entrypoint:
         - "/bin/sh"
         - "/home/user/nimbus-eth2/scripts/start-nimbus.sh"
@@ -64,3 +65,13 @@ services:
           - "0.0.0.0:${EXECUTION_P2P_PORT}:${EXECUTION_P2P_PORT}/tcp"
           - "0.0.0.0:${EXECUTION_P2P_PORT}:${EXECUTION_P2P_PORT}/udp"
         command: --datadir /nethermind/data
+
+    mevboost:
+        image: flashbots/mev-boost:${MEVBOOST_TAG}
+        container_name: mevboost
+        restart: always
+        command: >-
+          -addr 0.0.0.0:18550
+          -${NETWORK}
+          -relay-check
+          -relays ${MEVBOOST_RELAYS}
