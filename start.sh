@@ -12,6 +12,11 @@ HOST_GID="$(id -g)"
 mkdir -p ${EXECUTION_DATA}
 mkdir -p ${CONSENSUS_DATA}
 
+if [ "$ENABLE_MEVBOOST" != "" ]; then
+    # docker-compose decides which profiles to use based on this variable
+    COMPOSE_PROFILES="mevboost"
+fi
+
 docker-compose pull
 docker-compose down
 docker-compose up -d

@@ -72,6 +72,8 @@ services:
         image: flashbots/mev-boost:${MEVBOOST_TAG}
         container_name: mevboost
         restart: always
+        profiles:
+          - mevboost
         command: >-
           -addr 0.0.0.0:18550
           -${NETWORK}
