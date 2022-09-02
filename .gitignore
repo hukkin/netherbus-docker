@@ -1,5 +1,4 @@
 data/
-validator_keys/
 .env
 nethermind.env
 jwtsecret.txt

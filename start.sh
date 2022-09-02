@@ -15,6 +15,8 @@ mkdir -p ${CONSENSUS_DATA}
 if [ "$ENABLE_MEVBOOST" != "" ]; then
     # docker-compose decides which profiles to use based on this variable
     COMPOSE_PROFILES="mevboost"
+    # These are CLI args for Nimbus
+    NIMBUS_MEVBOOST_FLAGS="--payload-builder --payload-builder-url=http://mevboost:18550"
 fi
 
 docker-compose pull

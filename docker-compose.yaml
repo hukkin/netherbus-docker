@@ -10,21 +10,14 @@ services:
         - ${CONSENSUS_P2P_PORT}:${CONSENSUS_P2P_PORT}/tcp
         - ${CONSENSUS_P2P_PORT}:${CONSENSUS_P2P_PORT}/udp
         # Expose keymanager API to the host machine.
-        - 127.0.0.1:5052:5052/tcp
+        - 127.0.0.1:${KEYMANAGER_PORT}:${KEYMANAGER_PORT}/tcp
       volumes:
         - ${CONSENSUS_DATA}:/home/user/nimbus-eth2/build/data
         - ./jwtsecret.txt:/jwtsecret:ro
         - ./keymanagersecret.txt:/keymanagersecret:ro
-        - ./scripts:/home/user/nimbus-eth2/scripts:ro
-        - ./validator_keys:/home/user/nimbus-eth2/validator_keys:ro
-      environment:
-        - KEYSTORE_PASSWD
-        - ENABLE_MEVBOOST
-      entrypoint:
-        - "/bin/sh"
-        - "/home/user/nimbus-eth2/scripts/start-nimbus.sh"
       command: >-
         --keymanager
+        --keymanager-port=${KEYMANAGER_PORT}
         --keymanager-address=0.0.0.0
         --keymanager-token-file=/keymanagersecret
         --enr-auto-update=true
@@ -36,6 +29,7 @@ services:
         --tcp-port=${CONSENSUS_P2P_PORT}
         --udp-port=${CONSENSUS_P2P_PORT}
         --max-peers=${NIMBUS_PEERS}
+        ${NIMBUS_MEVBOOST_FLAGS}
         --non-interactive
         --status-bar=false
         --graffiti=""
