@@ -74,3 +74,4 @@ services:
           -${NETWORK}
           -relay-check
           -relays ${MEVBOOST_RELAYS}
+          -min-bid ${MEVBOOST_MIN_BID_ETH}
